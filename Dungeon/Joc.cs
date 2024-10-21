@@ -23,35 +23,11 @@ namespace Dungeon
 		{
 			GenerarPersonatges();
 			enemicActual = GenerarEnemic();
-			while (!FinalitzarCombat())
+			do
 			{
 				SeleccionarPersonatge();
 				Combat(ref personatgeActual, ref enemicActual);
-
-				if (enemicActual.EstàViu())
-				{
-					Console.WriteLine($"El {personatgeActual.Nom} ha estat derrotat!");
-					Console.WriteLine($"Selecciona un altre personatge per continuar la lluita.");
-					personatges.Remove(personatgeActual);
-					n_personatges--;
-				}
-				else
-				{
-					Console.WriteLine($"Felicitats! Has derrotat el {enemicActual.Nom}!");
-					Console.WriteLine($"Tots els personatges guanyen 20 punts de vida.");
-
-					for (int i = 0; i < n_personatges; i++)
-					{
-						personatges[i].Vida += 20;
-						if (personatges[i].Vida > 100) personatges[i].Vida = 100;
-					}
-
-					enemicActual = GenerarEnemic();
-					Console.WriteLine($"S'està generant un nou enemic...");
-					Console.WriteLine($"Enemic: {enemicActual.Nom}(Vida: {enemicActual.Vida}, Atac: {enemicActual.Atac})");
-				}
-
-			}
+			} while (!FinalitzarCombat());
 
 			Console.WriteLine("Tots els teus personatges han mort. Fi del joc.");
 		}
@@ -192,6 +168,29 @@ namespace Dungeon
 
 		private bool FinalitzarCombat()
 		{
+			if (enemicActual.EstàViu())
+			{
+				Console.WriteLine($"El {personatgeActual.Nom} ha estat derrotat!");
+				Console.WriteLine($"Selecciona un altre personatge per continuar la lluita.");
+				personatges.Remove(personatgeActual);
+				n_personatges--;
+			}
+			else
+			{
+				Console.WriteLine($"Felicitats! Has derrotat el {enemicActual.Nom}!");
+				Console.WriteLine($"Tots els personatges guanyen 20 punts de vida.");
+
+				for (int i = 0; i < n_personatges; i++)
+				{
+					personatges[i].Vida += 20;
+					if (personatges[i].Vida > 100) personatges[i].Vida = 100;
+				}
+
+				enemicActual = GenerarEnemic();
+				Console.WriteLine($"S'està generant un nou enemic...");
+				Console.WriteLine($"Enemic: {enemicActual.Nom}(Vida: {enemicActual.Vida}, Atac: {enemicActual.Atac})");
+			}
+
 			return personatges.Count == 0;
 		}
 	}
